@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ page.title | default: site.title | escape }} · Sam Yang</title>
   <meta name="description" content="Sam Yang's corner of the internet. Projects, experiments, and lessons learned along the way.">
-  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}?v={{ site.github.build_revision }}">
   <script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>
 </head>
 <body class="{% if page.journal %}journal-page{% else %}home-page{% endif %}">

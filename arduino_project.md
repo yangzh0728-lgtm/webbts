@@ -24,6 +24,25 @@ When the LEDs and potentiometer seemed unresponsive, we checked the pin assignme
 
 The resulting code uses **green above 17 cm**, **yellow above 9 cm and up to 17 cm**, and **red at 9 cm or less**. Green indicates a farther distance, yellow provides a warning, and red indicates that the object is close. The buzzer beeps faster as an object approaches and sounds continuously at **5 cm or less**. Through this process, I learned how to develop a tutorial into my own interactive design, use feedback to improve it, and troubleshoot the hardware and code together.
 
+### My circuit in action
+
+These photos show my actual breadboard circuit during testing. Select either photo to see it at full size.
+
+<div class="project-photos">
+  <figure>
+    <a href="{{ '/assets/images/parking-sensor-green.jpg' | relative_url }}">
+      <img src="{{ '/assets/images/parking-sensor-green.jpg' | relative_url }}" alt="Arduino Uno connected to the breadboard parking sensor, with the green LED illuminated beside the ultrasonic sensor." width="1280" height="1707" loading="lazy" decoding="async">
+    </a>
+    <figcaption><strong>Green · farther away.</strong> The green LED is illuminated on my working circuit.</figcaption>
+  </figure>
+  <figure>
+    <a href="{{ '/assets/images/parking-sensor-red.jpg' | relative_url }}">
+      <img src="{{ '/assets/images/parking-sensor-red.jpg' | relative_url }}" alt="A hand held close to the ultrasonic sensor while the red LED glows on the breadboard circuit." width="1280" height="1707" loading="lazy" decoding="async">
+    </a>
+    <figcaption><strong>Red · close to the sensor.</strong> Bringing my hand near the sensor turns on the red warning light.</figcaption>
+  </figure>
+</div>
+
 [View my complete Arduino code on GitHub](https://github.com/yangzh0728-lgtm/webbts/blob/main/arduino/parking_sensor/parking_sensor.ino).
 
 ## Technical Tidbit
