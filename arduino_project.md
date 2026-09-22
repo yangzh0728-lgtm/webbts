@@ -1,9 +1,8 @@
 ---
 layout: default
 title: Arduino Parking Sensor — Innovator Journal
+journal: true
 ---
-
-# Arduino Parking Sensor
 
 ## My process
 

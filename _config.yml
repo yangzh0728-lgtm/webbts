@@ -1,3 +1,5 @@
 title: Sam Yang
-description: About Me
+description: Projects, experiments, and lessons learned by Sam Yang.
+url: https://yangzh0728-lgtm.github.io
+baseurl: /webbts
 theme: jekyll-theme-cayman
