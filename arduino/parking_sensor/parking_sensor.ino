@@ -51,11 +51,11 @@ void updateOutputs() {
   else if (distanceCm > STOP_CM) level = 3;
   else level = 4;
 
-  // Far (>17 cm): red; middle (>9 to 17 cm): yellow; close (<=9 cm): green.
+  // Far (>17 cm): green; middle (>9 to 17 cm): yellow; close (<=9 cm): red.
   // No echo turns all three off.
-  digitalWrite(GREEN_PIN, level >= 3 ? HIGH : LOW);
+  digitalWrite(GREEN_PIN, level == 0 ? HIGH : LOW);
   digitalWrite(YELLOW_PIN, (level == 1 || level == 2) ? HIGH : LOW);
-  digitalWrite(RED_PIN, level == 0 ? HIGH : LOW);
+  digitalWrite(RED_PIN, level >= 3 ? HIGH : LOW);
 
   // Start a fresh beep immediately whenever the warning level changes.
   if (level != previousLevel) {

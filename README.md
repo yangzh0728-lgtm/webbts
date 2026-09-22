@@ -11,3 +11,7 @@ I enjoy playing sports such as **badminton, floorball, and golf**. Outside of sp
 ## Goals
 
 My goals are to continue improving academically and athletically, develop my skills in technology and entrepreneurship, and become more confident in leadership and teamwork.
+
+## Innovator Journal
+
+- [Arduino Parking Sensor](arduino_project.html) — My design process, circuit, code, and reflections.
