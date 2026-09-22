@@ -11,10 +11,10 @@
 <body class="{% if page.journal %}journal-page{% else %}home-page{% endif %}">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header wrap">
-    <a class="wordmark" href="{{ '/' | relative_url }}" aria-label="Sam Yang home">sy<span class="brand-dot">.</span></a>
+    <a class="wordmark" href="{{ '/' | relative_url }}?v={{ site.github.build_revision }}" aria-label="Sam Yang home">sy<span class="brand-dot">.</span></a>
     <nav aria-label="Main navigation">
-      <a href="{{ '/' | relative_url }}" {% unless page.journal %}aria-current="page"{% endunless %}>About me</a>
-      <a href="{{ '/arduino_project.html' | relative_url }}" {% if page.journal %}aria-current="page"{% endif %}>Innovator journal <span aria-hidden="true">↗</span></a>
+      <a href="{{ '/' | relative_url }}?v={{ site.github.build_revision }}" {% unless page.journal %}aria-current="page"{% endunless %}>About me</a>
+      <a href="{{ '/arduino_project.html' | relative_url }}?v={{ site.github.build_revision }}" {% if page.journal %}aria-current="page"{% endif %}>Innovator journal <span aria-hidden="true">↗</span></a>
     </nav>
     <span class="header-note">A little curious. Always building.</span>
   </header>
@@ -48,7 +48,7 @@
     </div>
   {% else %}
     <section class="hero home-hero" aria-labelledby="page-title">
-      <div class="hero-copy"><p class="eyebrow"><span class="little-dot"></span> Sam Yang / Toronto, Canada</p><h1 id="page-title">Curiosity.<br>Meet <em>creativity.</em></h1><p class="hero-description">Hi, I’m Sam. I’m into technology, sports, and figuring things out by making them.</p><a class="button" href="{{ '/arduino_project.html' | relative_url }}">Explore my latest build <span aria-hidden="true">↗</span></a></div>
+      <div class="hero-copy"><p class="eyebrow"><span class="little-dot"></span> Sam Yang / Toronto, Canada</p><h1 id="page-title">Curiosity.<br>Meet <em>creativity.</em></h1><p class="hero-description">Hi, I’m Sam. I’m into technology, sports, and figuring things out by making them.</p><a class="button" href="{{ '/arduino_project.html' | relative_url }}?v={{ site.github.build_revision }}">Explore my latest build <span aria-hidden="true">↗</span></a></div>
       <div class="idea-board" aria-label="My interests: technology, cars, drones, and sports">
         <span class="board-caption eyebrow">A few things that make me, me.</span>
         <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
@@ -58,10 +58,10 @@
       </div>
     </section>
     <div class="interest-strip" aria-label="Interests"><span>Technology</span><span aria-hidden="true">✳</span><span>Engineering</span><span aria-hidden="true">✳</span><span>Sports</span><span aria-hidden="true">✳</span><span>Entrepreneurship</span></div>
-    <section class="featured-project" aria-labelledby="featured-title"><div><p class="eyebrow">The latest experiment / 001</p><h2 id="featured-title">Small circuit.<br>Real-world idea.</h2><p>Turning an ultrasonic sensor, a few LEDs, and feedback from classmates into a parking assistant.</p><a class="text-link" href="{{ '/arduino_project.html' | relative_url }}">Read my innovator journal <span aria-hidden="true">↗</span></a></div><a class="project-art" href="{{ '/arduino_project.html' | relative_url }}" aria-label="Read the Arduino parking sensor journal"><div class="mini-lights" aria-hidden="true"><span></span><span></span><span></span></div><span class="project-art-label">Arduino parking sensor</span><span class="project-art-sub">Sense it. See it. Hear it.</span><span class="art-arrow" aria-hidden="true">↗</span></a></section>
+    <section class="featured-project" aria-labelledby="featured-title"><div><p class="eyebrow">The latest experiment / 001</p><h2 id="featured-title">Small circuit.<br>Real-world idea.</h2><p>Turning an ultrasonic sensor, a few LEDs, and feedback from classmates into a parking assistant.</p><a class="text-link" href="{{ '/arduino_project.html' | relative_url }}?v={{ site.github.build_revision }}">Read my innovator journal <span aria-hidden="true">↗</span></a></div><a class="project-art" href="{{ '/arduino_project.html' | relative_url }}?v={{ site.github.build_revision }}" aria-label="Read the Arduino parking sensor journal"><div class="mini-lights" aria-hidden="true"><span></span><span></span><span></span></div><span class="project-art-label">Arduino parking sensor</span><span class="project-art-sub">Sense it. See it. Hear it.</span><span class="art-arrow" aria-hidden="true">↗</span></a></section>
     <article class="prose about-content">{{ content }}</article>
   {% endif %}
   </main>
-  <footer class="wrap site-footer"><a class="wordmark" href="{{ '/' | relative_url }}">sy<span class="brand-dot">.</span></a><p>Made with curiosity. Documented by Sam Yang.</p><a href="#main">Back to top ↑</a></footer>
+  <footer class="wrap site-footer"><a class="wordmark" href="{{ '/' | relative_url }}?v={{ site.github.build_revision }}">sy<span class="brand-dot">.</span></a><p>Made with curiosity. Documented by Sam Yang.</p><a href="#main">Back to top ↑</a></footer>
 </body>
 </html>
