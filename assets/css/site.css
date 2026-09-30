@@ -54,11 +54,15 @@ a:focus-visible,input:focus-visible {
   min-height:104px;
   border-bottom:1px solid var(--line)}
 .wordmark {
-  font:700 42px/1 var(--display);
-  letter-spacing:-4px;
+  display:block;
+  flex-shrink:0;
   text-decoration:none}
-.brand-dot {
-  color:var(--green)}
+.wordmark img {
+  display:block;
+  width:120px;
+  height:76px;
+  object-fit:cover;
+  border-radius:6px}
 .site-header nav {
   display:flex;
   gap:30px;
@@ -496,8 +500,9 @@ a:focus-visible,input:focus-visible {
   align-items:center;
   gap:30px;
   padding-block:30px}
-.site-footer .wordmark {
-  font-size:30px}
+.site-footer .wordmark img {
+  width:92px;
+  height:58px}
 .site-footer p {
   font-size:11px;
   color:var(--muted)}
@@ -506,6 +511,76 @@ a:focus-visible,input:focus-visible {
   font-size:11px;
   text-decoration:none}
 
+.journal-entries {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px 28px;
+  padding:22px 0;
+  border-bottom:1px solid var(--line);
+  font-size:13px;
+}
+.journal-entries a {
+  text-decoration:none;
+  color:var(--muted);
+}
+.journal-entries a:hover,.journal-entries a[aria-current] {
+  color:var(--green);
+  text-decoration:underline;
+}
+.prototype-card {
+  background:#e7ebdd;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:30px;
+}
+.prototype-card h2 {
+  font:600 clamp(28px,3vw,40px)/1.15 var(--display);
+  letter-spacing:-1px;
+  margin:18px 0;
+}
+.prototype-card>p:not(.eyebrow) {
+  font-size:15px;
+  color:var(--muted);
+}
+.prototype-card dl {
+  margin:26px 0 0;
+  font-size:12px;
+}
+.prototype-card dl div {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:6px 12px;
+  border-top:1px solid #c3ccba;
+  padding:12px 0;
+}
+.prototype-card dd {
+  margin:0;
+  color:var(--green);
+  font-weight:700;
+}
+.scanner-preview {
+  display:block;
+  overflow:hidden;
+  border-radius:10px;
+  background:var(--green);
+  color:var(--paper);
+  text-decoration:none;
+}
+.scanner-preview img {
+  display:block;
+  width:100%;
+  height:300px;
+  object-fit:cover;
+  object-position:center 58%;
+}
+.scanner-preview>span {
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:16px 22px;
+  font:500 18px var(--display);
+}
 .project-photos {
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
@@ -583,13 +658,14 @@ a:focus-visible,input:focus-visible {
   width:calc(100% - 40px)}
 .site-header {
   min-height:82px;
-  gap:28px;
+  gap:16px;
   justify-content:space-between}
 .site-header nav {
   font-size:12px;
-  gap:20px}
-.wordmark {
-  font-size:36px}
+  gap:14px}
+.wordmark img {
+  width:84px;
+  height:54px}
 .hero {
   grid-template-columns:1fr;
   padding:43px 0;
