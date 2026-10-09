@@ -22,11 +22,11 @@
   try { best = Math.max(0, Number(localStorage.getItem('blocks-space-best')) || 0); } catch (_) {}
   $('best').textContent = best.toLocaleString();
   const shopDetails = {
-    long: { icon:'▰', text:'让下一块必定是长条，当前方块不变。', success:'下一块已变成长条，等你安排。' },
-    clear: { icon:'≋', text:'清除底部 3 行，当前方块回到顶部。不额外计分或赚币。', success:'底部三行已清理，当前方块已回到顶部。' },
-    revive: { icon:'↻', text:'结束后清空顶部 8 行，保留分数继续。每局限用一次。', success:'复活成功！返回游戏后，按继续重新出发。' },
+    long: { icon:'▰', text:'Make the next piece an I-piece. Your current piece stays the same.', success:'An I-piece is up next. Make it count!' },
+    clear: { icon:'≋', text:'Remove the bottom 3 rows and return your piece to the top. No extra points or coins.', success:'Bottom 3 rows cleared. Your piece is back at the top.' },
+    revive: { icon:'↻', text:'After game over, clear the top 8 rows and keep your score. Once per game.', success:'You are back! Return to the game and press Resume when you are ready.' },
   };
-  $('shop-items').innerHTML = Object.entries(SHOP).map(([id,item]) => `<article class="shop-item"><span class="item-icon item-${id}" aria-hidden="true">${shopDetails[id].icon}</span><div class="item-info"><h3>${item.name}<span id="owned-${id}">拥有 0 次</span></h3><p>${shopDetails[id].text}</p><div class="item-actions"><button id="buy-${id}" class="buy-button" aria-label="兑换${item.name}">${item.price} 币 · 兑换</button><button id="use-${id}" class="use-button" aria-label="使用${item.name}">使用一次</button></div></div></article>`).join('');
+  $('shop-items').innerHTML = Object.entries(SHOP).map(([id,item]) => `<article class="shop-item"><span class="item-icon item-${id}" aria-hidden="true">${shopDetails[id].icon}</span><div class="item-info"><h3>${item.name}<span id="owned-${id}">Owned: 0</span></h3><p>${shopDetails[id].text}</p><div class="item-actions"><button id="buy-${id}" class="buy-button" aria-label="Buy ${item.name}">${item.price} coins · Buy</button><button id="use-${id}" class="use-button" aria-label="Use ${item.name}">Use once</button></div></div></article>`).join('');
 
   function updateEconomy() {
     const encoded = JSON.stringify(game.exportProfile());
@@ -36,30 +36,30 @@
       catch (_) { storageAvailable = false; }
       $('coins').textContent = game.coins.toLocaleString();
       $('shop-coins').textContent = game.coins.toLocaleString();
-      $('wallet').setAttribute('aria-label', `打开游戏币商店，余额 ${game.coins} 币`);
-      $('save-status').textContent = storageAvailable ? '游戏币与未使用的机会自动保存，重新开始也会保留。' : '浏览器未允许保存：游戏币与道具仅在当前页面保留。';
+      $('wallet').setAttribute('aria-label', `Open coin shop, balance ${game.coins} coins`);
+      $('save-status').textContent = storageAvailable ? 'Coins and unused items are saved automatically, even when you restart.' : 'Storage is unavailable. Coins and items will only last until you close or reload this page.';
     }
-    $('round-coins').textContent = `本局 +${game.coinsEarned} 币`;
+    $('round-coins').textContent = `Earned +${game.coinsEarned}`;
     const reasons = Object.keys(SHOP).map(id => game.cheatUnavailable(id));
     const key = encoded + game.state + reasons.join('|');
     if (key === shopKey) return;
     shopKey = key;
     Object.entries(SHOP).forEach(([id,item], index) => {
-      $('owned-' + id).textContent = `拥有 ${game.inventory[id]} 次`;
+      $('owned-' + id).textContent = `Owned: ${game.inventory[id]}`;
       const buy = $('buy-' + id), use = $('use-' + id);
       buy.disabled = game.coins < item.price;
-      buy.textContent = buy.disabled ? `${item.price} 币 · 余额不足` : `${item.price} 币 · 兑换`;
+      buy.textContent = buy.disabled ? `${item.price} coins · Need more` : `${item.price} coins · Buy`;
       use.disabled = Boolean(reasons[index]);
-      use.textContent = reasons[index] || '使用一次';
+      use.textContent = reasons[index] || 'Use once';
     });
-    $('shop-game-state').textContent = {ready:'随时备好道具',playing:'游戏进行中',paused:'游戏已暂停',over:game.reviveUsed ? '本局已用过复活' : '可兑换复活机会'}[game.state];
+    $('shop-game-state').textContent = {ready:'Stock up anytime',playing:'Game in progress',paused:'Game paused',over:game.reviveUsed ? 'Revive already used' : 'Get a second chance'}[game.state];
   }
   function openShop() {
     if ($('restart-dialog').open || $('shop-dialog').open) return;
     resumeAfterShop = game.state === 'playing';
     if (resumeAfterShop) game.pause();
     heldKeys.clear();
-    $('shop-message').textContent = game.state === 'over' ? '想继续这一局？兑换并使用「再来一次」。' : '兑换后存入背包，想用的时候再使用。';
+    $('shop-message').textContent = game.state === 'over' ? 'Keep this round going: buy and use a Second chance.' : 'Buy now and keep it in your bag. Use it when you need it.';
     updateUI(); drawBoard(); $('shop-dialog').showModal();
   }
   function closeShop() {
@@ -75,8 +75,8 @@
   $('shop-dialog').addEventListener('cancel', event => { event.preventDefault(); closeShop(); });
   Object.keys(SHOP).forEach(id => {
     $('buy-' + id).addEventListener('click', () => {
-      if (game.buy(id)) { $('shop-message').textContent = `已兑换「${SHOP[id].name}」1 次，存入背包。`; tone(660,.12); }
-      else $('shop-message').textContent = '游戏币不足，消除更多行就能继续赚币。';
+      if (game.buy(id)) { $('shop-message').textContent = `Added 1 ${SHOP[id].name} to your bag.`; tone(660,.12); }
+      else $('shop-message').textContent = 'Not enough coins. Clear more lines to earn them.';
       updateUI();
     });
     $('use-' + id).addEventListener('click', () => {
@@ -164,7 +164,7 @@
     $('level').textContent = String(game.level).padStart(2, '0');
     $('lines').textContent = game.lines;
     $('progress').style.width = (game.lines % 10) * 10 + '%';
-    $('progress-text').textContent = `${game.lines % 10} / 10 行`;
+    $('progress-text').textContent = `${game.lines % 10} / 10 lines`;
     const seconds = Math.floor(game.elapsed / 1000);
     $('time').textContent = `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
     if (game.score > best) {
@@ -175,14 +175,14 @@
     if (key !== previewKey) {
       drawPreview('hold', game.held, game.usedHold);
       for (let i = 0; i < 5; i++) drawPreview(`next-${i}`, game.queue[i]);
-      $('hold-hint').textContent = game.usedHold ? '放下当前方块后，可再次交换。' : '为下一步，留一手。';
+      $('hold-hint').textContent = game.usedHold ? 'Place this piece to swap again.' : 'Save a piece for later.';
       previewKey = key;
     }
     if (game.placements !== lastPlacement) {
       lastPlacement = game.placements;
       if (game.lastClear) {
         const toast = $('clear-toast');
-        toast.textContent = ['', '消除一行', '双行消除', '三行消除', '四行全消！'][game.lastClear] + ` +${game.lastCoinReward}币`;
+        toast.textContent = ['', 'SINGLE', 'DOUBLE', 'TRIPLE', 'TETRIS!'][game.lastClear] + ` +${game.lastCoinReward} coins`;
         toast.classList.remove('pop'); void toast.offsetWidth; toast.classList.add('pop');
         clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('pop'), 1100);
         [440,554,659,880].slice(0,game.lastClear + 1).forEach((f,i) => tone(f,.22,i*.065));
@@ -193,17 +193,17 @@
       const playing = game.state === 'playing';
       $('overlay').classList.toggle('hidden', playing);
       $('pause').disabled = game.state === 'ready' || game.state === 'over';
-      $('pause-text').textContent = game.state === 'paused' ? '继续' : '暂停';
-      $('status').textContent = {ready:'准备就绪',playing:'正在游戏',paused:'休息一下',over:'本局结束'}[game.state];
+      $('pause-text').textContent = game.state === 'paused' ? 'Resume' : 'Pause';
+      $('status').textContent = {ready:'Ready to play',playing:'Playing',paused:'Paused',over:'Game over'}[game.state];
       $('status-dot').style.background = playing ? '#b4ecc8' : '#e8b383';
       if (game.state === 'paused') {
-        $('overlay-eyebrow').textContent = 'TAKE YOUR TIME'; $('overlay-title').innerHTML = '休息一下，<br>灵感就来。';
-        $('overlay-description').textContent = '方块等你，节奏由你。'; $('start-text').textContent = '继续游戏';
-        $('start-hint').textContent = '按 P 或 Enter 继续';
+        $('overlay-eyebrow').textContent = 'TAKE YOUR TIME'; $('overlay-title').innerHTML = 'Take a breath.<br>Find your flow.';
+        $('overlay-description').textContent = 'Your blocks can wait. Take your time.'; $('start-text').textContent = 'Resume game';
+        $('start-hint').textContent = 'Press P or Enter to resume';
       } else if (game.state === 'over') {
-        $('overlay-eyebrow').textContent = 'ONE MORE LITTLE BREAK'; $('overlay-title').innerHTML = '每一次落下，<br>都是新开始。';
-        $('overlay-description').textContent = `本局 ${game.score.toLocaleString()} 分 · 赚取 ${game.coinsEarned} 币`;
-        $('start-text').textContent = '再玩一次'; $('start-hint').textContent = '按 Enter 开启新一局';
+        $('overlay-eyebrow').textContent = 'ONE MORE LITTLE BREAK'; $('overlay-title').innerHTML = 'Every ending.<br>A new beginning.';
+        $('overlay-description').textContent = `${game.score.toLocaleString()} points · ${game.coinsEarned} coins earned`;
+        $('start-text').textContent = 'Play again'; $('start-hint').textContent = 'Press Enter for a new game';
         tone(330,.25); tone(220,.35,.2);
       }
     }
@@ -240,8 +240,8 @@
       if(Audio) { audio ||= new Audio(); audio.resume().catch(() => {}); } else sound = false;
     }
     $('sound').setAttribute('aria-pressed', String(sound));
-    $('sound').setAttribute('aria-label', sound ? '关闭音效' : '打开音效');
-    $('sound').title = sound ? '关闭音效' : '打开音效';
+    $('sound').setAttribute('aria-label', sound ? 'Mute sound' : 'Enable sound');
+    $('sound').title = sound ? 'Mute sound' : 'Enable sound';
     $('sound-waves').setAttribute('d', sound ? 'M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14' : 'm16 9 6 6m0-6-6 6');
     tone(660,.1); $('sound').blur();
   });

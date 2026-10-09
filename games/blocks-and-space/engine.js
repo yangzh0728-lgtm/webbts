@@ -10,7 +10,7 @@
     L: [[0,0,1],[1,1,1],[0,0,0]],
   };
   const emptyBoard = () => Array.from({ length: 20 }, () => Array(10).fill(null));
-  const SHOP = Object.freeze({ long: { name: '长条召唤', price: 20 }, clear: { name: '底部清理', price: 30 }, revive: { name: '再来一次', price: 50 } });
+  const SHOP = Object.freeze({ long: { name: 'I-piece ticket', price: 20 }, clear: { name: 'Clear 3 rows', price: 30 }, revive: { name: 'Second chance', price: 50 } });
   const COIN_REWARDS = [0,10,25,45,80];
   const safeCount = value => Number.isSafeInteger(value) && value >= 0 ? Math.min(value, 1000000000) : 0;
   class Game {
@@ -32,16 +32,16 @@
       this.coins -= SHOP[id].price; this.inventory[id]++; return true;
     }
     cheatUnavailable(id) {
-      if (!Object.hasOwn(SHOP, id)) return '未知道具';
+      if (!Object.hasOwn(SHOP, id)) return 'Unknown item';
       if (id === 'revive') {
-        if (this.reviveUsed) return '本局已复活';
-        if (this.state !== 'over') return '结束后可用';
+        if (this.reviveUsed) return 'Already revived';
+        if (this.state !== 'over') return 'After game over';
       } else {
-        if (!['playing','paused'].includes(this.state)) return '开局后可用';
-        if (id === 'long' && this.queue[0] === 'I') return '下一块已是长条';
-        if (id === 'clear' && !this.board.slice(17).flat().some(Boolean)) return '底部无需清理';
+        if (!['playing','paused'].includes(this.state)) return 'Start a game first';
+        if (id === 'long' && this.queue[0] === 'I') return 'I-piece is next';
+        if (id === 'clear' && !this.board.slice(17).flat().some(Boolean)) return 'Nothing to clear';
       }
-      if (!this.inventory[id]) return '请先兑换';
+      if (!this.inventory[id]) return 'Buy one first';
       return '';
     }
     useCheat(id) {
