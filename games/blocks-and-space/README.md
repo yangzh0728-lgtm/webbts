@@ -2,7 +2,7 @@
 
 The four game files in this directory are copied from Sam Yang's
 `yangzh0728-lgtm/blocks-and-space` repository at commit
-`e3ea4d16a834fb34525fbe2d1fd4e5b7602ede21`.
+`870c737f8f590e7ffc0ac0cb30ba5853c5393320`.
 
 The project page is `/webbts/tetris_project.html`; the standalone game is
 `/webbts/games/blocks-and-space/`. The game interface is in English.
