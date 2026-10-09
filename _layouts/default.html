@@ -13,13 +13,34 @@
   <header class="site-header wrap">
     <a class="wordmark" href="{{ '/' | relative_url }}?v={{ site.github.build_revision }}" aria-label="Sam Yang home"><img src="{{ '/assets/images/sam-yang-logo-purple-text.png' | relative_url }}" alt="Sam Yang" width="1254" height="1254"></a>
     <nav aria-label="Main navigation">
-      <a href="{{ '/' | relative_url }}?v={{ site.github.build_revision }}" {% unless page.journal %}aria-current="page"{% endunless %}>About me</a>
+      <a href="{{ '/' | relative_url }}?v={{ site.github.build_revision }}" {% unless page.journal or page.game_project %}aria-current="page"{% endunless %}>About me</a>
       <a href="{{ '/arduino_project.html' | relative_url }}?v={{ site.github.build_revision }}" {% if page.journal %}aria-current="page"{% endif %}>Innovator journal <span aria-hidden="true">↗</span></a>
+      <a href="{{ '/tetris_project.html' | relative_url }}" {% if page.game_project %}aria-current="page"{% endif %}>Tetris</a>
     </nav>
     <span class="header-note">A little curious. Always building.</span>
   </header>
   <main id="main" class="wrap">
-  {% if page.journal %}
+  {% if page.game_project %}
+    <section class="hero game-hero" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="little-dot"></span> Game project / 003</p>
+        <h1 id="page-title">Blocks.<br><em>Meet space.</em></h1>
+        <p class="hero-description">A little room to play. My browser Tetris game, with falling blocks, a coin shop, and one more round.</p>
+        <div class="tags"><span>JavaScript</span><span>Keyboard + touch</span><span>Play in your browser</span></div>
+        <a class="button" href="#play">Play Blocks &amp; Space <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="tetris-art" aria-hidden="true"><div class="tetromino"><i></i><i></i><i></i><i></i></div><span class="project-art-label">Blocks &amp; Space</span><span class="project-art-sub">Rotate. Drop. Clear. Repeat.</span></div>
+    </section>
+    <section id="play" class="game-player" aria-labelledby="play-title">
+      <div class="game-player-heading"><div><p class="eyebrow">Ready for a round?</p><h2 id="play-title">Play Blocks &amp; Space</h2></div><a class="text-link" href="{{ '/games/blocks-and-space/' | relative_url }}" target="_blank" rel="noopener">Open game in a new tab <span aria-hidden="true">↗</span></a></div>
+      <p id="game-help">Click inside the game, then press Enter to start. Use the arrow keys to move and rotate, Space to drop, and P to pause. <a href="#how-to-play">All controls ↓</a></p>
+      <iframe class="game-frame" src="{{ '/games/blocks-and-space/' | relative_url }}" title="Blocks &amp; Space — playable Tetris game in Chinese" aria-describedby="game-help" loading="lazy"></iframe>
+    </section>
+    <div class="journal-grid">
+      <aside class="journal-nav"><p class="eyebrow">Inside the project</p><nav aria-label="Project sections"><a href="#about-the-project"><span>01</span> About the game</a><a href="#how-to-play"><span>02</span> How to play</a><a href="#behind-the-game"><span>03</span> Behind the game</a></nav></aside>
+      <article class="prose journal-content game-content">{{ content }}</article>
+    </div>
+  {% elsif page.journal %}
     <nav class="journal-entries" aria-label="Journal entries">
       <a href="{{ '/arduino_project.html' | relative_url }}" {% unless page.scanner %}aria-current="page"{% endunless %}>001 / Parking sensor</a>
       <a href="{{ '/spinning_scanner.html' | relative_url }}" {% if page.scanner %}aria-current="page"{% endif %}>002 / Spinning scanner</a>
@@ -75,7 +96,7 @@
     {% endif %}
   {% else %}
     <section class="hero home-hero" aria-labelledby="page-title">
-      <div class="hero-copy"><p class="eyebrow"><span class="little-dot"></span> Sam Yang / Toronto, Canada</p><h1 id="page-title">Curiosity.<br>Meet <em>creativity.</em></h1><p class="hero-description">Hi, I’m Sam. I’m into technology, sports, and figuring things out by making them.</p><a class="button" href="{{ '/spinning_scanner.html' | relative_url }}?v={{ site.github.build_revision }}">Explore my latest build <span aria-hidden="true">↗</span></a></div>
+      <div class="hero-copy"><p class="eyebrow"><span class="little-dot"></span> Sam Yang / Toronto, Canada</p><h1 id="page-title">Curiosity.<br>Meet <em>creativity.</em></h1><p class="hero-description">Hi, I’m Sam. I’m into technology, sports, and figuring things out by making them.</p><a class="button" href="{{ '/tetris_project.html' | relative_url }}?v={{ site.github.build_revision }}">Explore my latest build <span aria-hidden="true">↗</span></a></div>
       <div class="idea-board" aria-label="My interests: technology, cars, drones, and sports">
         <span class="board-caption eyebrow">A few things that make me, me.</span>
         <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
@@ -85,7 +106,8 @@
       </div>
     </section>
     <div class="interest-strip" aria-label="Interests"><span>Technology</span><span aria-hidden="true">✳</span><span>Engineering</span><span aria-hidden="true">✳</span><span>Sports</span><span aria-hidden="true">✳</span><span>Entrepreneurship</span></div>
-    <section class="featured-project" aria-labelledby="scanner-featured-title"><div><p class="eyebrow">The latest experiment / 002</p><h2 id="scanner-featured-title">A simple start.<br>A new direction.</h2><p>My spinning 2D scanner is at the skateboard stage: assembled and wired, with testing next.</p><a class="text-link" href="{{ '/spinning_scanner.html' | relative_url }}">Read my scanner journal <span aria-hidden="true">↗</span></a></div><a class="scanner-preview" href="{{ '/spinning_scanner.html' | relative_url }}"><img src="{{ '/assets/images/spinning-scanner-assembly.jpg' | relative_url }}" alt="View the spinning 2D scanner journal and its assembled prototype." width="1280" height="1707" loading="lazy" decoding="async"><span>Spinning 2D scanner <span aria-hidden="true">↗</span></span></a></section>
+    <section class="featured-project" aria-labelledby="tetris-featured-title"><div><p class="eyebrow">The latest experiment / 003</p><h2 id="tetris-featured-title">One more block.<br>One more round.</h2><p>Blocks &amp; Space: my browser Tetris game with keyboard and touch controls, saved high scores, and a power-up shop.</p><a class="text-link" href="{{ '/tetris_project.html' | relative_url }}">Explore and play Tetris <span aria-hidden="true">↗</span></a></div><a class="tetris-art" href="{{ '/tetris_project.html' | relative_url }}" aria-label="Explore the Blocks and Space Tetris project"><div class="tetromino" aria-hidden="true"><i></i><i></i><i></i><i></i></div><span class="project-art-label">Blocks &amp; Space</span><span class="project-art-sub">A little space to play.</span></a></section>
+    <section class="featured-project" aria-labelledby="scanner-featured-title"><div><p class="eyebrow">Previous experiment / 002</p><h2 id="scanner-featured-title">A simple start.<br>A new direction.</h2><p>My spinning 2D scanner is at the skateboard stage: assembled and wired, with testing next.</p><a class="text-link" href="{{ '/spinning_scanner.html' | relative_url }}">Read my scanner journal <span aria-hidden="true">↗</span></a></div><a class="scanner-preview" href="{{ '/spinning_scanner.html' | relative_url }}"><img src="{{ '/assets/images/spinning-scanner-assembly.jpg' | relative_url }}" alt="View the spinning 2D scanner journal and its assembled prototype." width="1280" height="1707" loading="lazy" decoding="async"><span>Spinning 2D scanner <span aria-hidden="true">↗</span></span></a></section>
     <section class="featured-project" aria-labelledby="featured-title"><div><p class="eyebrow">Previous experiment / 001</p><h2 id="featured-title">Small circuit.<br>Real-world idea.</h2><p>Turning an ultrasonic sensor, a few LEDs, and feedback from classmates into a parking assistant.</p><a class="text-link" href="{{ '/arduino_project.html' | relative_url }}?v={{ site.github.build_revision }}">Read my innovator journal <span aria-hidden="true">↗</span></a></div><a class="project-art" href="{{ '/arduino_project.html' | relative_url }}?v={{ site.github.build_revision }}" aria-label="Read the Arduino parking sensor journal"><div class="mini-lights" aria-hidden="true"><span></span><span></span><span></span></div><span class="project-art-label">Arduino parking sensor</span><span class="project-art-sub">Sense it. See it. Hear it.</span><span class="art-arrow" aria-hidden="true">↗</span></a></section>
     <article class="prose about-content">{{ content }}</article>
   {% endif %}
