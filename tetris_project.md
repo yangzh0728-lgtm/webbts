@@ -123,6 +123,12 @@ The code separates three important jobs: HTML provides the page elements, CSS co
 
 AI produced the implementation, and this explanation was prepared with AI assistance. A useful next step for my own understanding is to trace one key press through the input handler, movement method, collision check, and redraw, then explain that sequence without relying on the code comments.
 
+Today, I saw a variety of games, from complex 3D games to simple dodging games. Seeing these different projects gave me ideas for how I could improve my own Tetris game.
+
+## Future goals
+
+My future goals for this course are to understand JavaScript well enough to explain how my Tetris game handles movement, collisions, graphics, and scoring. Also, improve my game by adding an original feature, testing it, and documenting the changes in my Innovator Journal. Explore how different types of games work. Today, I saw a variety of games, from complex 3D games to simple dodging games, which inspired me to try creating another game, starting with a simple dodging game.
+
 ## How to play
 
 Click **Start game** or press **Enter** while the game is focused to start. Click inside the game before using keyboard controls. On a phone, use the on-screen buttons.
