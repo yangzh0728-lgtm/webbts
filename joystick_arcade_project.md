@@ -5,36 +5,137 @@ journal: true
 arcade_project: true
 ---
 
-## The idea
+<span id="the-idea"></span>
 
-For this project, I wanted to connect a physical Arduino controller to a game running on my laptop. The class activity introduced the idea of reading a sensor with an Arduino, sending its values over serial, and using Python to turn those readings into game controls. Instead of choosing a different sensor for each game, I chose **one analog joystick that could control a small arcade**.
+## My plan
 
-I started by asking Codex for game ideas that could interact with an Arduino. After exploring possibilities such as a distance-controlled flying game and a knob-controlled spaceship, I moved forward with a joystick arcade technical plan. I then asked Codex to implement it. The result is a Python program with five games: **Maze Escape, Snake, Pong, Breakout, and Space Dodge**.
+For this project, I wanted to use a physical sensor to control a game on my laptop. I chose an **analog joystick connected to an Arduino Uno-compatible board**. The joystick contains two potentiometers: one measures horizontal movement and the other measures vertical movement. It also has a push button. This gives me two movement values and one action input from a single controller.
 
-Unlike my earlier browser-based Tetris project, this arcade runs locally on a laptop using **Pygame and PySerial**. This website documents the project; the screenshots are previews, not an embedded playable version.
+I chose the joystick because moving it left, right, up, or down matches the movements I want in an arcade game. It can provide both simple directions for a maze and smooth movement for a paddle or spaceship. My plan was to use **one joystick for five games: Maze Escape, Snake, Pong, Breakout, and Space Dodge**.
+
+I expected the connection to work like this:
+
+**Joystick movement → Arduino readings → USB serial message → Python controller → game movement.**
+
+The Arduino would read the sensor and send numbers to the laptop. Python would use **PySerial** to receive them, then **Pygame** would update the game. Keeping the controller separate from the game rules would let all five games share the same input code. Keyboard controls would provide a fallback while developing or troubleshooting the hardware.
+
+| Game | How I planned to use the joystick |
+| --- | --- |
+| Maze Escape | Tilt to move through passages; press to continue after a round. |
+| Snake | Tilt to choose a direction without reversing into the snake's body. |
+| Pong | Use the vertical axis to move the paddle; press to serve. |
+| Breakout | Use the horizontal axis to move the paddle; press to launch. |
+| Space Dodge | Use both axes to steer; hold briefly to fire. |
 
 ## My process
 
-The first design decision was to separate the controller from the games. The Arduino reports the joystick's horizontal position, vertical position, and button state. A shared Python controller interprets those readings, and each game uses the same controls. This means adding another game does not require rewriting the Arduino sketch.
+### How I used AI
 
-With AI assistance, the implementation began with input handling and saved scores, followed by the menu and individual games. Keyboard controls were included so the software could be developed and checked before connecting the hardware. Arrow keys or WASD move the player, while Space or Enter acts as the joystick button.
+I first asked **Codex** for ideas for games that could interact with an Arduino. After reviewing the ideas, I supplied a joystick arcade technical plan and asked Codex to start coding. AI generated the Python game framework, the five game implementations, and the Arduino sketch. It also helped explain the code, run software checks, and prepare this journal.
 
-The games use different parts of the same input. Maze Escape and Snake need four directions; Pong uses the vertical axis; Breakout uses the horizontal axis; Space Dodge uses both axes. Pressing the button selects a game, serves a ball, or restarts a round. Holding it for one second returns to the arcade menu.
+My role was to choose the project direction, supply the plan and wiring reference, ask for changes, and provide the project photo and demonstration video. For example, I asked whether the maze could be random each time, and I showed the actual pin arrangement so the sketch could match it. The code and automated tests were produced with AI assistance; I am not presenting them as work I wrote independently.
 
-<div class="project-photos">
-  <figure>
-    <a href="{{ '/assets/images/joystick-arcade-menu.png' | relative_url }}"><img src="{{ '/assets/images/joystick-arcade-menu.png' | relative_url }}" alt="Joystick Arcade menu listing Maze Escape, Snake, Pong, Breakout, and Space Dodge, with saved best scores." width="800" height="600" loading="lazy" decoding="async"></a>
-    <figcaption><strong>One controller, five games.</strong> A development screenshot of the shared menu in keyboard mode.</figcaption>
-  </figure>
-  <figure>
-    <a href="{{ '/assets/images/joystick-arcade-maze.png' | relative_url }}"><img src="{{ '/assets/images/joystick-arcade-maze.png' | relative_url }}" alt="Maze Escape with a yellow player near the upper-left corner and a green exit near the lower-right corner." width="800" height="600" loading="lazy" decoding="async"></a>
-    <figcaption><strong>A new route each time.</strong> Maze Escape generates its layout when a game or level begins.</figcaption>
-  </figure>
-</div>
+### Connecting the joystick
 
-## In-game gallery
+The initial technical plan assigned the joystick button to **D2**, but the wiring diagram I supplied used **D7**. The firmware was changed to read D7. This was a useful reminder that the physical wiring and the code must agree.
 
-These previews show all five games in progress, captured from the running game code with scripted inputs. Select a picture to open it at full size.
+| Joystick pin | Arduino pin | Purpose |
+| --- | --- | --- |
+| GND | GND | Common ground |
+| VCC | 5V | Power |
+| VRX | A0 | Horizontal position |
+| VRY | A1 | Vertical position |
+| SW | D7 | Push button |
+
+The button pin uses `INPUT_PULLUP`. It reads `LOW` when pressed, so the sketch converts a pressed button into `1` for the serial message. A short debounce interval prevents a single physical press from being interpreted as several presses. An optional passive buzzer can connect to D8 and GND.
+
+<figure class="arcade-wiring">
+  <a href="{{ '/assets/images/joystick-arcade-wiring.png' | relative_url }}"><img src="{{ '/assets/images/joystick-arcade-wiring.png' | relative_url }}" alt="Joystick wiring reference: black GND wire, red 5V wire, yellow VRX to A0, green VRY to A1, and blue SW to digital pin 7 on an Arduino Uno." width="1504" height="624" loading="lazy" decoding="async"></a>
+  <figcaption>The wiring reference I supplied for this project. This is a diagram, not a photograph of a tested circuit.</figcaption>
+</figure>
+
+### Sending meaningful values from the Arduino
+
+The firmware starts serial communication at **115200 baud** and sends a reading every **20 milliseconds**, or about 50 times per second. These lines from the sketch send the two analog values and the button state:
+
+```cpp
+Serial.print(analogRead(PIN_X));
+Serial.print(',');
+Serial.print(analogRead(PIN_Y));
+Serial.print(',');
+Serial.println(stableButton ? 1 : 0);
+```
+
+The commas separate the fields, and `Serial.println()` ends the reading with a newline. Each analog value is between **0 and 1023**. A centered joystick is usually near 512, and the button value is either 0 or 1. For example:
+
+| Example message | What it means |
+| --- | --- |
+| `512,512,0` | Stick near the center; button released. |
+| `1023,512,0` | X axis at its high end; button released. |
+| `512,0,1` | Y axis at its low end; button pressed. |
+
+These examples explain the message format; they are not a saved log from my board. Serial Monitor at 115200 baud is the place to check the actual readings. It must be closed before launching the game so Python can use the port.
+
+<span id="technical-tidbit"></span>
+
+### Reading the values in Python
+
+Python opens the serial port with `timeout=0`, so waiting for the next sensor message does not freeze the game. The shared `SerialLink` reads the bytes already available, separates complete lines at newline characters, and keeps any unfinished line for the next frame.
+
+The controller then splits each line at the commas and checks it before using it. This excerpt comes from `Controller.update()`:
+
+```python
+parts = line.split(',')
+if len(parts) != 3 or not all(p.isascii() and p.isdigit() for p in parts):
+    continue
+x, y, button = map(int, parts)
+if not (0 <= x <= 1023 and 0 <= y <= 1023 and button in (0, 1)):
+    continue
+self.raw = x, y, button
+```
+
+The controller keeps the **newest valid reading**, which prevents a backlog of old movements. It records the first valid X and Y values as the resting center, so the joystick should be centered when the game connects. It then converts the axes to values between **−1 and +1** and applies a **dead zone** around the center to prevent drift.
+
+Each game receives this interpreted input once per frame. For example, Pong uses the vertical value multiplied by paddle speed and elapsed time. Maze Escape turns a strong tilt into one of four directions. The controller also detects a new button press and a one-second hold, which returns to the menu. If serial readings stop for more than half a second, it releases the old hardware input while leaving keyboard controls available.
+
+[View the complete Arduino sketch](https://github.com/yangzh0728-lgtm/webbts/blob/main/arduino/arcade_joystick/arcade_joystick.ino).
+
+### Testing and troubleshooting
+
+Codex ran **31 automated tests** covering calibration, button timing, serial input, menu transitions, score saving, and game rules. A local simulated serial connection tested PySerial, and scripted inputs ran each game for three simulated minutes. These are software checks, rather than a claim that I personally playtested every game for that duration.
+
+One test found a crash when repeatedly closing and reopening Pygame. Cached font objects survived after Pygame shut down; clearing them during shutdown fixed the problem. The Arduino sketch also compiled successfully for an Uno after the D7 change.
+
+During an earlier connection check, the Mac did not list an Arduino port. The troubleshooting steps were to check the USB data cable, choose the board's port, upload the sketch, inspect the readings, and close Serial Monitor before starting Python. Compiling successfully and receiving live sensor data are separate checks.
+
+## My result
+
+The project now has a **five-game laptop arcade**, a shared joystick controller, keyboard fallback, saved high scores, and an Arduino sketch that matches the D7 button wiring. I have included my project recording and a photo of the assembled controller below, along with game previews.
+
+The video is the demonstration for this submission. The photo documents the physical setup, while the gallery shows the games' appearance and rules. The arcade itself runs locally in Python; the website plays the recording and displays the pictures.
+
+### Video demonstration
+
+<figure class="arcade-video">
+  <video controls playsinline preload="metadata" aria-label="Joystick Arcade project demonstration" aria-describedby="arcade-video-caption">
+    <source src="{{ '/assets/videos/joystick-arcade-demo.mp4' | relative_url }}" type="video/mp4">
+    Your browser does not support embedded video. <a href="{{ '/assets/videos/joystick-arcade-demo.mp4' | relative_url }}">Open the demonstration video.</a>
+  </video>
+  <figcaption id="arcade-video-caption"><strong>Joystick Arcade demonstration.</strong> My project recording, approximately two minutes long. Use the player controls to play, pause, adjust the volume, or view it full screen.</figcaption>
+</figure>
+
+[Open the video directly]( {{ '/assets/videos/joystick-arcade-demo.mp4' | relative_url }} ).
+
+### My actual joystick setup
+
+<figure class="arcade-wiring arcade-hardware-photo">
+  <a href="{{ '/assets/images/joystick-arcade-hardware.jpg' | relative_url }}"><img src="{{ '/assets/images/joystick-arcade-hardware.jpg' | relative_url }}" alt="An ELEGOO Uno R3 connected to an analog joystick with colored jumper wires and a blue USB cable, with the board's indicator lights illuminated on a wooden desk." width="1280" height="1707" loading="lazy" decoding="async"></a>
+  <figcaption><strong>The physical controller.</strong> My Uno-compatible board and joystick connected with jumper wires and a USB cable. Select the photo to see the wiring at full size.</figcaption>
+</figure>
+
+### In-game gallery
+
+These previews were captured from the running game code with scripted inputs. Select a picture to open it at full size.
 
 <div class="project-photos arcade-gallery">
   <figure>
@@ -59,84 +160,31 @@ These previews show all five games in progress, captured from the running game c
   </figure>
 </div>
 
-## Connecting the joystick
+### Menu and first maze
 
-An important change came from comparing the initial code with the wiring diagram I supplied. The technical plan used **D2** for the joystick button, but my diagram used **D7**. I asked for the implementation to match the diagram, and the firmware was updated accordingly.
+<div class="project-photos">
+  <figure>
+    <a href="{{ '/assets/images/joystick-arcade-menu.png' | relative_url }}"><img src="{{ '/assets/images/joystick-arcade-menu.png' | relative_url }}" alt="Joystick Arcade menu listing Maze Escape, Snake, Pong, Breakout, and Space Dodge, with saved best scores." width="800" height="600" loading="lazy" decoding="async"></a>
+    <figcaption><strong>One controller, five games.</strong> A development screenshot of the shared menu in keyboard mode.</figcaption>
+  </figure>
+  <figure>
+    <a href="{{ '/assets/images/joystick-arcade-maze.png' | relative_url }}"><img src="{{ '/assets/images/joystick-arcade-maze.png' | relative_url }}" alt="Maze Escape with a yellow player near the upper-left corner and a green exit near the lower-right corner." width="800" height="600" loading="lazy" decoding="async"></a>
+    <figcaption><strong>A new route each time.</strong> Maze Escape generates its layout when a game or level begins.</figcaption>
+  </figure>
+</div>
 
-| Joystick pin | Arduino Uno pin | Purpose |
-| --- | --- | --- |
-| GND | GND | Common ground |
-| VCC | 5V | Power |
-| VRX | A0 | Horizontal position |
-| VRY | A1 | Vertical position |
-| SW | D7 | Joystick push button |
+### Reflection
 
-The button uses `INPUT_PULLUP`, so the pin reads `LOW` when pressed. The firmware converts that into `1` before sending it to Python. An optional passive buzzer can connect to D8 and GND for feedback; it is not shown in this diagram.
+The most useful lesson from this project is that sensor readings need interpretation before they become good game controls. Raw values alone do not explain whether the joystick is centered, whether a button was just pressed, or which direction a player intends to move. Calibration, a dead zone, and button timing give the games usable inputs.
 
-### Video demonstration
+The D2-to-D7 correction also showed why checking the wiring matters. Even correct Python logic cannot respond to a button if the Arduino sketch reads the wrong pin. Separating the controller from the games makes this easier to troubleshoot because the input can be checked in one place.
 
-<figure class="arcade-video">
-  <video controls playsinline preload="metadata" aria-label="Joystick Arcade project demonstration" aria-describedby="arcade-video-caption">
-    <source src="{{ '/assets/videos/joystick-arcade-demo.mp4' | relative_url }}" type="video/mp4">
-    Your browser does not support embedded video. <a href="{{ '/assets/videos/joystick-arcade-demo.mp4' | relative_url }}">Open the demonstration video.</a>
-  </video>
-  <figcaption id="arcade-video-caption"><strong>Joystick Arcade demonstration.</strong> My project recording, approximately two minutes long. Use the player controls to play, pause, adjust the volume, or view it full screen.</figcaption>
-</figure>
+I also asked for random mazes. The implementation generates a new connected maze when starting, retrying after a loss, or entering the next level. The start and exit remain in opposite corners, but the passages change, so replaying does not depend on memorizing one route.
 
-[Open the video directly]( {{ '/assets/videos/joystick-arcade-demo.mp4' | relative_url }} ).
+### Next steps
 
-### My actual joystick setup
+My next checks are to record how reliably the physical joystick controls each game, test the one-second return gesture, and unplug the board during play to check the keyboard fallback. The optional buzzer also needs its own check.
 
-<figure class="arcade-wiring arcade-hardware-photo">
-  <a href="{{ '/assets/images/joystick-arcade-hardware.jpg' | relative_url }}"><img src="{{ '/assets/images/joystick-arcade-hardware.jpg' | relative_url }}" alt="An ELEGOO Uno R3 connected to an analog joystick with colored jumper wires and a blue USB cable, with the board's indicator lights illuminated on a wooden desk." width="1280" height="1707" loading="lazy" decoding="async"></a>
-  <figcaption><strong>The physical controller.</strong> My Uno-compatible board and joystick connected with jumper wires and a USB cable. Select the photo to see the wiring at full size.</figcaption>
-</figure>
+I would like a classmate to try the controls and give feedback. Space Dodge currently requires short firing bursts because holding the same button for one second exits to the menu. Testing that interaction will help me decide whether the control scheme needs to change. I also want to explain one full input path—from `analogRead()` to the player's movement—in my own words.
 
-<figure class="arcade-wiring">
-  <a href="{{ '/assets/images/joystick-arcade-wiring.png' | relative_url }}"><img src="{{ '/assets/images/joystick-arcade-wiring.png' | relative_url }}" alt="Joystick wiring reference: black GND wire, red 5V wire, yellow VRX to A0, green VRY to A1, and blue SW to digital pin 7 on an Arduino Uno." width="1504" height="624" loading="lazy" decoding="async"></a>
-  <figcaption>The wiring reference I supplied for this project. This is a diagram, not a photograph of a tested circuit.</figcaption>
-</figure>
-
-The USB cable carries the readings from the Arduino to the laptop. Both programs use **115200 baud**. After uploading the sketch, the Serial Monitor can show whether moving and pressing the joystick changes the values. It must then be closed before starting the game, because the game needs access to the same serial port.
-
-[View the Arduino sketch](https://github.com/yangzh0728-lgtm/webbts/blob/main/arduino/arcade_joystick/arcade_joystick.ino).
-
-## Technical tidbit
-
-The Arduino sends a line approximately every 20 milliseconds. A typical reading is:
-
-```text
-512,512,0
-```
-
-The first two numbers are analog readings from 0 to 1023; the last number is the button state. A resting joystick is usually near the middle, but it may not sit at exactly 512. Python records the first valid reading as its center and applies a **dead zone** so small resting variations do not make the player drift. The stick should be centered when the game connects.
-
-Python also keeps the newest complete reading instead of processing old readings one at a time. This prevents a growing input delay. If readings stop arriving for more than half a second, the controller releases the old movement and button input, while keyboard controls remain available.
-
-I also asked whether the maze could be random every time. The implementation already regenerates it when starting a game, retrying after a loss, or entering the next level. It uses a randomized backtracking algorithm: choose an unvisited neighboring cell, carve a passage, and backtrack when there are no unvisited neighbors. The start and exit stay in opposite corners, while the route changes. The algorithm connects all maze cells, so the exit remains reachable.
-
-## Testing and troubleshooting
-
-Codex ran **31 automated tests**, including controller calibration, button timing, menu transitions, score saving, and game rules. A serial integration test used a local simulated device connection to exercise PySerial. Each game also completed three minutes of simulated play with scripted inputs. These checks provide software evidence, but they are not the same as playing for three minutes with a physical joystick.
-
-One application test exposed a crash when repeatedly closing and reopening Pygame. Cached font objects were surviving after Pygame had shut down. Clearing those objects during shutdown fixed the crash, and the tests then passed. The Arduino sketch also compiled successfully for an Uno after the button pin was changed to D7.
-
-**At the time of this entry, physical upload and joystick playtesting have not been confirmed.** When we checked the Mac's serial devices during setup, an Arduino port was not listed. The next hardware check is to connect the board with a USB data cable, select its port, upload the sketch, and inspect the live readings before launching the game.
-
-## Reflection
-
-This project shows why hardware and software need a clear agreement. A working game cannot recognize the joystick button if its sketch reads the wrong pin. The D2-to-D7 correction was small, but it mattered to the whole interaction.
-
-The shared controller also gives me a useful programming pattern to study. Each game can focus on its own rules because calibration, serial input, and button timing are handled in one place. My next learning task is to trace one joystick movement from `analogRead()` through the serial message to a change in the player's position, and explain that sequence in my own words.
-
-AI generated the implementation and assisted with the tests and this journal. My contributions so far were choosing the project direction, supplying the technical plan and wiring reference, and asking how random mazes and the Arduino connection work. I still need to verify the physical experience myself.
-
-## Next steps
-
-- Upload the D7 version of the sketch and confirm both axes and the button in Serial Monitor.
-- Play all five games with the real joystick, checking direction, sensitivity, and the one-second return gesture.
-- Unplug the board during a game and confirm that keyboard controls still work.
-- Test the optional buzzer and confirm that sounds do not interrupt movement readings.
-- Ask a classmate to try the controls and record their feedback. In particular, Space Dodge currently requires short firing bursts because holding for one second exits to the menu; that tradeoff needs playtesting.
-
-*Journal entry: October 29, 2026.*
+*Journal entry: October 29, 2026. Written with AI assistance.*

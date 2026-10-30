@@ -310,6 +310,9 @@ a:focus-visible,input:focus-visible {
   font-weight:600}
 .prose a {
   color:var(--green)}
+.journal-content {
+  min-width:0;
+}
 .journal-content h2 {
   padding-top:30px;
   border-top:1px solid var(--line);
