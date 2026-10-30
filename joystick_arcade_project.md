@@ -32,6 +32,33 @@ The games use different parts of the same input. Maze Escape and Snake need four
   </figure>
 </div>
 
+## In-game gallery
+
+These previews show all five games in progress, captured from the running game code with scripted inputs. Select a picture to open it at full size.
+
+<div class="project-photos arcade-gallery">
+  <figure>
+    <a href="{{ '/assets/images/joystick-arcade-maze-gameplay.png' | relative_url }}"><img src="{{ '/assets/images/joystick-arcade-maze-gameplay.png' | relative_url }}" alt="Maze Escape in progress, with a yellow player partway through the maze and a dotted trail marking visited passages." width="800" height="600" loading="lazy" decoding="async"></a>
+    <figcaption><strong>Maze Escape · follow the trail.</strong> Navigate the random passages and reach the green exit before the countdown ends.</figcaption>
+  </figure>
+  <figure>
+    <a href="{{ '/assets/images/joystick-arcade-snake-gameplay.png' | relative_url }}"><img src="{{ '/assets/images/joystick-arcade-snake-gameplay.png' | relative_url }}" alt="Snake gameplay with a longer green body, yellow head, red food, and a score of 100." width="800" height="600" loading="lazy" decoding="async"></a>
+    <figcaption><strong>Snake · room to grow.</strong> Ten pieces of food bring the score to 100 and make the snake longer and faster.</figcaption>
+  </figure>
+  <figure>
+    <a href="{{ '/assets/images/joystick-arcade-pong-gameplay.png' | relative_url }}"><img src="{{ '/assets/images/joystick-arcade-pong-gameplay.png' | relative_url }}" alt="An active Pong rally with a white ball between the blue player paddle and yellow computer paddle." width="800" height="600" loading="lazy" decoding="async"></a>
+    <figcaption><strong>Pong · keep the rally going.</strong> Move the blue paddle up and down to return the ball against the computer.</figcaption>
+  </figure>
+  <figure>
+    <a href="{{ '/assets/images/joystick-arcade-breakout-gameplay.png' | relative_url }}"><img src="{{ '/assets/images/joystick-arcade-breakout-gameplay.png' | relative_url }}" alt="Breakout in progress with gaps in the colored brick wall, a moving ball, and a score of 160." width="800" height="600" loading="lazy" decoding="async"></a>
+    <figcaption><strong>Breakout · open up the wall.</strong> Missing bricks show the ball's progress. Higher rows award more points.</figcaption>
+  </figure>
+  <figure>
+    <a href="{{ '/assets/images/joystick-arcade-space-dodge-gameplay.png' | relative_url }}"><img src="{{ '/assets/images/joystick-arcade-space-dodge-gameplay.png' | relative_url }}" alt="Space Dodge gameplay with a blue spaceship, falling asteroids, and a score of 255 after 13 seconds." width="800" height="600" loading="lazy" decoding="async"></a>
+    <figcaption><strong>Space Dodge · move and fire.</strong> Steer through falling asteroids and fire in short bursts for bonus points.</figcaption>
+  </figure>
+</div>
+
 ## Connecting the joystick
 
 An important change came from comparing the initial code with the wiring diagram I supplied. The technical plan used **D2** for the joystick button, but my diagram used **D7**. I asked for the implementation to match the diagram, and the firmware was updated accordingly.

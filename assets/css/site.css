@@ -679,6 +679,9 @@ a:focus-visible,input:focus-visible {
   color:#ebebf5;
   text-decoration:none;
 }
+.arcade-gallery figure:last-child {
+  grid-column:1 / -1;
+}
 .arcade-preview img,.arcade-wiring img {
   display:block;
   width:100%;
