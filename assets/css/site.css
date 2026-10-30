@@ -669,6 +669,38 @@ a:focus-visible,input:focus-visible {
   gap:22px;
   margin:24px 0 32px;
 }
+.arcade-preview {
+  display:block;
+  margin:0;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#141623;
+  color:#ebebf5;
+  text-decoration:none;
+}
+.arcade-preview img,.arcade-wiring img {
+  display:block;
+  width:100%;
+  height:auto;
+}
+.arcade-preview figcaption,.arcade-preview>span {
+  display:block;
+  padding:14px 20px;
+  font-size:13px;
+}
+.arcade-wiring {
+  margin:26px 0;
+}
+.arcade-wiring img {
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.arcade-wiring figcaption {
+  margin-top:12px;
+  color:var(--muted);
+  font-size:13px;
+}
 .project-photos figure {
   margin:0;
 }

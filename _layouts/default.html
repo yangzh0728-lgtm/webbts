@@ -21,12 +21,29 @@
   <main id="main" class="wrap">
   {% if page.journal %}
     <nav class="journal-entries" aria-label="Journal entries">
-      <a href="{{ '/arduino_project.html' | relative_url }}?v={{ site.github.build_revision }}" {% unless page.scanner or page.game_project %}aria-current="page"{% endunless %}>001 / Parking sensor</a>
+      <a href="{{ '/arduino_project.html' | relative_url }}?v={{ site.github.build_revision }}" {% unless page.scanner or page.game_project or page.arcade_project %}aria-current="page"{% endunless %}>001 / Parking sensor</a>
       <a href="{{ '/spinning_scanner.html' | relative_url }}?v={{ site.github.build_revision }}" {% if page.scanner %}aria-current="page"{% endif %}>002 / Spinning scanner</a>
       <a href="{{ '/tetris_project.html' | relative_url }}?v={{ site.github.build_revision }}" {% if page.game_project %}aria-current="page"{% endif %}>003 / Tetris code autopsy</a>
+      <a href="{{ '/joystick_arcade_project.html' | relative_url }}?v={{ site.github.build_revision }}" {% if page.arcade_project %}aria-current="page"{% endif %}>004 / Joystick Arcade</a>
     </nav>
   {% endif %}
-  {% if page.game_project %}
+  {% if page.arcade_project %}
+    <section class="hero journal-hero" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="little-dot"></span> Innovator journal / 004</p>
+        <h1 id="page-title">One joystick.<br><em>Five worlds.</em></h1>
+        <p class="hero-description">Connecting an Arduino to a laptop arcade: five games, a shared controller, and a new random maze each round.</p>
+        <div class="tags"><span>Arduino Uno</span><span>Python + Pygame</span><span>Hardware testing next</span></div>
+        <a class="text-link" href="#the-idea">Follow the project <span aria-hidden="true">↓</span></a>
+      </div>
+      <figure class="arcade-preview"><img src="{{ '/assets/images/joystick-arcade-menu.png' | relative_url }}" alt="The five-game Joystick Arcade menu running in keyboard mode." width="800" height="600" decoding="async"><figcaption>A laptop arcade, built with AI assistance.</figcaption></figure>
+    </section>
+    <div class="project-strip"><span><b>INPUT</b> Analog joystick + button</span><span><b>CONNECTION</b> USB serial · 115200 baud</span><span><b>STATUS</b> Software checked · hardware testing next</span></div>
+    <div class="journal-grid">
+      <aside class="journal-nav"><p class="eyebrow">Inside the build</p><nav aria-label="Journal sections"><a href="#the-idea"><span>01</span> The idea</a><a href="#my-process"><span>02</span> My process</a><a href="#connecting-the-joystick"><span>03</span> Connecting the joystick</a><a href="#technical-tidbit"><span>04</span> Technical tidbit</a><a href="#testing-and-troubleshooting"><span>05</span> Testing &amp; troubleshooting</a><a href="#reflection"><span>06</span> Reflection</a><a href="#next-steps"><span>07</span> Next steps</a></nav><a class="code-link" href="https://github.com/yangzh0728-lgtm/webbts/blob/main/arduino/arcade_joystick/arcade_joystick.ino">View the Arduino code ↗</a></aside>
+      <article class="prose journal-content game-content">{{ content }}</article>
+    </div>
+  {% elsif page.game_project %}
     <section class="hero game-hero" aria-labelledby="page-title">
       <div class="hero-copy">
         <p class="eyebrow"><span class="little-dot"></span> Innovator journal / 003</p>
@@ -99,7 +116,7 @@
     {% endif %}
   {% else %}
     <section class="hero home-hero" aria-labelledby="page-title">
-      <div class="hero-copy"><p class="eyebrow"><span class="little-dot"></span> Sam Yang / Toronto, Canada</p><h1 id="page-title">Curiosity.<br>Meet <em>creativity.</em></h1><p class="hero-description">Hi, I’m Sam. I’m into technology, sports, and figuring things out by making them.</p><a class="button" href="{{ '/tetris_project.html' | relative_url }}?v={{ site.github.build_revision }}">Explore my latest build <span aria-hidden="true">↗</span></a></div>
+      <div class="hero-copy"><p class="eyebrow"><span class="little-dot"></span> Sam Yang / Toronto, Canada</p><h1 id="page-title">Curiosity.<br>Meet <em>creativity.</em></h1><p class="hero-description">Hi, I’m Sam. I’m into technology, sports, and figuring things out by making them.</p><a class="button" href="{{ '/joystick_arcade_project.html' | relative_url }}?v={{ site.github.build_revision }}">Explore my latest build <span aria-hidden="true">↗</span></a></div>
       <div class="idea-board" aria-label="My interests: technology, cars, drones, and sports">
         <span class="board-caption eyebrow">A few things that make me, me.</span>
         <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
@@ -109,6 +126,7 @@
       </div>
     </section>
     <div class="interest-strip" aria-label="Interests"><span>Technology</span><span aria-hidden="true">✳</span><span>Engineering</span><span aria-hidden="true">✳</span><span>Sports</span><span aria-hidden="true">✳</span><span>Entrepreneurship</span></div>
+    <section class="featured-project" aria-labelledby="arcade-featured-title"><div><p class="eyebrow">Latest experiment / 004</p><h2 id="arcade-featured-title">One joystick.<br>Five worlds.</h2><p>Building an Arduino-controlled laptop arcade, from serial input and random mazes to software tests and the next hardware checks.</p><a class="text-link" href="{{ '/joystick_arcade_project.html' | relative_url }}">Read my Joystick Arcade journal <span aria-hidden="true">↗</span></a></div><a class="arcade-preview" href="{{ '/joystick_arcade_project.html' | relative_url }}"><img src="{{ '/assets/images/joystick-arcade-menu.png' | relative_url }}" alt="Explore the Joystick Arcade project and its five-game menu." width="800" height="600" loading="lazy" decoding="async"><span>Joystick Arcade <span aria-hidden="true">↗</span></span></a></section>
     <section class="featured-project" aria-labelledby="tetris-featured-title"><div><p class="eyebrow">Innovator journal / 003</p><h2 id="tetris-featured-title">One more block.<br>One more round.</h2><p>A code autopsy of my AI-generated Tetris game: movement, collisions, scoring, and a deliberate change.</p><a class="text-link" href="{{ '/tetris_project.html' | relative_url }}">Read my Tetris journal <span aria-hidden="true">↗</span></a></div><a class="tetris-art" href="{{ '/tetris_project.html' | relative_url }}" aria-label="Explore the Blocks and Space Tetris project"><div class="tetromino" aria-hidden="true"><i></i><i></i><i></i><i></i></div><span class="project-art-label">Blocks &amp; Space</span><span class="project-art-sub">A little space to play.</span></a></section>
     <section class="featured-project" aria-labelledby="scanner-featured-title"><div><p class="eyebrow">Previous experiment / 002</p><h2 id="scanner-featured-title">A simple start.<br>A new direction.</h2><p>My spinning 2D scanner is at the skateboard stage: assembled and wired, with testing next.</p><a class="text-link" href="{{ '/spinning_scanner.html' | relative_url }}">Read my scanner journal <span aria-hidden="true">↗</span></a></div><a class="scanner-preview" href="{{ '/spinning_scanner.html' | relative_url }}"><img src="{{ '/assets/images/spinning-scanner-assembly.jpg' | relative_url }}" alt="View the spinning 2D scanner journal and its assembled prototype." width="1280" height="1707" loading="lazy" decoding="async"><span>Spinning 2D scanner <span aria-hidden="true">↗</span></span></a></section>
     <section class="featured-project" aria-labelledby="featured-title"><div><p class="eyebrow">Previous experiment / 001</p><h2 id="featured-title">Small circuit.<br>Real-world idea.</h2><p>Turning an ultrasonic sensor, a few LEDs, and feedback from classmates into a parking assistant.</p><a class="text-link" href="{{ '/arduino_project.html' | relative_url }}?v={{ site.github.build_revision }}">Read my innovator journal <span aria-hidden="true">↗</span></a></div><a class="project-art" href="{{ '/arduino_project.html' | relative_url }}?v={{ site.github.build_revision }}" aria-label="Read the Arduino parking sensor journal"><div class="mini-lights" aria-hidden="true"><span></span><span></span><span></span></div><span class="project-art-label">Arduino parking sensor</span><span class="project-art-sub">Sense it. See it. Hear it.</span><span class="art-arrow" aria-hidden="true">↗</span></a></section>
