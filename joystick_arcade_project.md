@@ -73,6 +73,13 @@ An important change came from comparing the initial code with the wiring diagram
 
 The button uses `INPUT_PULLUP`, so the pin reads `LOW` when pressed. The firmware converts that into `1` before sending it to Python. An optional passive buzzer can connect to D8 and GND for feedback; it is not shown in this diagram.
 
+### My actual joystick setup
+
+<figure class="arcade-wiring arcade-hardware-photo">
+  <a href="{{ '/assets/images/joystick-arcade-hardware.jpg' | relative_url }}"><img src="{{ '/assets/images/joystick-arcade-hardware.jpg' | relative_url }}" alt="An ELEGOO Uno R3 connected to an analog joystick with colored jumper wires and a blue USB cable, with the board's indicator lights illuminated on a wooden desk." width="1280" height="1707" loading="lazy" decoding="async"></a>
+  <figcaption><strong>The physical controller.</strong> My Uno-compatible board and joystick connected with jumper wires and a USB cable. Select the photo to see the wiring at full size.</figcaption>
+</figure>
+
 <figure class="arcade-wiring">
   <a href="{{ '/assets/images/joystick-arcade-wiring.png' | relative_url }}"><img src="{{ '/assets/images/joystick-arcade-wiring.png' | relative_url }}" alt="Joystick wiring reference: black GND wire, red 5V wire, yellow VRX to A0, green VRY to A1, and blue SW to digital pin 7 on an Arduino Uno." width="1504" height="624" loading="lazy" decoding="async"></a>
   <figcaption>The wiring reference I supplied for this project. This is a diagram, not a photograph of a tested circuit.</figcaption>

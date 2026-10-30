@@ -704,6 +704,10 @@ a:focus-visible,input:focus-visible {
   color:var(--muted);
   font-size:13px;
 }
+.arcade-hardware-photo {
+  max-width:520px;
+  margin-inline:auto;
+}
 .project-photos figure {
   margin:0;
 }
