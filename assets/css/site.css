@@ -708,6 +708,23 @@ a:focus-visible,input:focus-visible {
   max-width:520px;
   margin-inline:auto;
 }
+.arcade-video {
+  margin:26px 0;
+}
+.arcade-video video {
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:680px;
+  background:#141623;
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+.arcade-video figcaption {
+  margin-top:12px;
+  color:var(--muted);
+  font-size:13px;
+}
 .project-photos figure {
   margin:0;
 }

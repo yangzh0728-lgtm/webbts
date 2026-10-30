@@ -73,6 +73,18 @@ An important change came from comparing the initial code with the wiring diagram
 
 The button uses `INPUT_PULLUP`, so the pin reads `LOW` when pressed. The firmware converts that into `1` before sending it to Python. An optional passive buzzer can connect to D8 and GND for feedback; it is not shown in this diagram.
 
+### Video demonstration
+
+<figure class="arcade-video">
+  <video controls playsinline preload="metadata" aria-label="Joystick Arcade project demonstration" aria-describedby="arcade-video-caption">
+    <source src="{{ '/assets/videos/joystick-arcade-demo.mp4' | relative_url }}" type="video/mp4">
+    Your browser does not support embedded video. <a href="{{ '/assets/videos/joystick-arcade-demo.mp4' | relative_url }}">Open the demonstration video.</a>
+  </video>
+  <figcaption id="arcade-video-caption"><strong>Joystick Arcade demonstration.</strong> My project recording, approximately two minutes long. Use the player controls to play, pause, adjust the volume, or view it full screen.</figcaption>
+</figure>
+
+[Open the video directly]( {{ '/assets/videos/joystick-arcade-demo.mp4' | relative_url }} ).
+
 ### My actual joystick setup
 
 <figure class="arcade-wiring arcade-hardware-photo">
