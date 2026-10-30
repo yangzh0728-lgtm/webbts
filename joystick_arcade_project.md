@@ -5,6 +5,18 @@ journal: true
 arcade_project: true
 ---
 
+### Video demonstration
+
+<figure class="arcade-video">
+  <video controls playsinline preload="metadata" aria-label="Joystick Arcade project demonstration" aria-describedby="arcade-video-caption">
+    <source src="{{ '/assets/videos/joystick-arcade-demo.mp4' | relative_url }}" type="video/mp4">
+    Your browser does not support embedded video. <a href="{{ '/assets/videos/joystick-arcade-demo.mp4' | relative_url }}">Open the demonstration video.</a>
+  </video>
+  <figcaption id="arcade-video-caption"><strong>Joystick Arcade demonstration.</strong> My project recording, approximately two minutes long. Use the player controls to play, pause, adjust the volume, or view it full screen.</figcaption>
+</figure>
+
+[Open the video directly]( {{ '/assets/videos/joystick-arcade-demo.mp4' | relative_url }} ).
+
 <span id="the-idea"></span>
 
 ## My plan
@@ -110,21 +122,9 @@ During an earlier connection check, the Mac did not list an Arduino port. The tr
 
 ## My result
 
-The project now has a **five-game laptop arcade**, a shared joystick controller, keyboard fallback, saved high scores, and an Arduino sketch that matches the D7 button wiring. I have included my project recording and a photo of the assembled controller below, along with game previews.
+The project now has a **five-game laptop arcade**, a shared joystick controller, keyboard fallback, saved high scores, and an Arduino sketch that matches the D7 button wiring. The demonstration video at the top of this page shows my project recording. Below are a photo of the assembled controller and game previews.
 
 The video is the demonstration for this submission. The photo documents the physical setup, while the gallery shows the games' appearance and rules. The arcade itself runs locally in Python; the website plays the recording and displays the pictures.
-
-### Video demonstration
-
-<figure class="arcade-video">
-  <video controls playsinline preload="metadata" aria-label="Joystick Arcade project demonstration" aria-describedby="arcade-video-caption">
-    <source src="{{ '/assets/videos/joystick-arcade-demo.mp4' | relative_url }}" type="video/mp4">
-    Your browser does not support embedded video. <a href="{{ '/assets/videos/joystick-arcade-demo.mp4' | relative_url }}">Open the demonstration video.</a>
-  </video>
-  <figcaption id="arcade-video-caption"><strong>Joystick Arcade demonstration.</strong> My project recording, approximately two minutes long. Use the player controls to play, pause, adjust the volume, or view it full screen.</figcaption>
-</figure>
-
-[Open the video directly]( {{ '/assets/videos/joystick-arcade-demo.mp4' | relative_url }} ).
 
 ### My actual joystick setup
 
